@@ -77,7 +77,7 @@ when isMainModule:
   import cligen
   try: 
     dispatch(suggestions0,
-      doc = " word suggestions from stdin",
+      doc = " Given a list of words from stdin, provide suggestions using damerau-levenshtein.",
       short = {
         "distance":  'd',
         "num":       'n'
