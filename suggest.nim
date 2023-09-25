@@ -57,8 +57,8 @@ proc suggestions*[T](wrong: string; match, right: openArray[T],
     for i in 0 ..< match.len:
       if right[i] notin result and dist[i] <= d:
         result.add(right[i])
-    if result.len >= enoughResults:
-      break
+      if result.len >= enoughResults:
+        return result
 
 proc readWords(): seq[string] =
   if not stdin.isatty():
