@@ -1,12 +1,8 @@
 
-
-# do word suggestion with distance=2
-suggest word='bat':
-  @ ./suggest --distance 2 < words.txt {{word}}
-
-# show help
-help: 
-  @ ./suggest --help
-
+# install using nimble
 build:
-  nim c suggest.nim
+  nimble install
+
+# suggest 5 top words with distance 2 using the standard linux word dictionary, which contains around 100k lines.
+suggest word='hacking':
+  suggest -n5 --distance 2 < /usr/share/dict/words hacking

@@ -58,7 +58,7 @@ proc suggestions*[T](wrong: string; match, right: openArray[T],
       if right[i] notin result and dist[i] <= d:
         result.add(right[i])
       if result.len >= enoughResults:
-        return result
+        break
 
 proc readWords(): seq[string] =
   if not stdin.isatty():
@@ -69,22 +69,23 @@ proc readWords(): seq[string] =
 proc suggestions0(distance = 4, num = 10, args: seq[string]) = 
   var words = readWords()
   for word in args:
-    let sugg = suggestions(word, words, words, enoughResults = num, unrelatedDistance = C(distance))
-    if sugg.len > 0: 
-      echo sugg.join(" ")
+    for sugg in suggestions(word, words, words, enoughResults = num, unrelatedDistance = C(distance)):
+      echo sugg
 
 when isMainModule:
   import cligen
   try: 
     dispatch(suggestions0,
-      doc = " Given a list of words from stdin, provide suggestions using damerau-levenshtein.",
+      doc = " Given a list of words from stdin, provide suggestions using damerau-levenshtein.\nExample:\n  suggest -n5 --distance 2 < /usr/share/dict/words {{word}}",
       short = {
         "distance":  'd',
         "num":       'n'
       }, 
       help = {
-        "distance":  "max number of transpositions to match",
-        "num":       "max number of matches"
+        "distance":     "max number of transpositions to match",
+        "num":          "max number of matches",
+        "help-syntax":  "CLIGEN-NOHELP",
+        "help":         "CLIGEN-NOHELP"
       },
     cmdName = "suggest", 
     noHdr=true)
